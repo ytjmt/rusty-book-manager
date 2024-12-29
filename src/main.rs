@@ -16,3 +16,9 @@ async fn main() -> Result<()> {
     println!("Listening on {}", addr);
     Ok(axum::serve(listener, app).await?)
 }
+
+#[tokio::test]
+async fn health_check_works() {
+    let status_code = health_check().await;
+    assert_eq!(status_code, StatusCode::OK);
+}
