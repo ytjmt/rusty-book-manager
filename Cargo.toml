@@ -17,7 +17,9 @@ kernel = { path = "./kernel" }
 registry = { path = "./registry" }
 shared = { path = "./shared" }
 anyhow = "1.0.75"
+async-trait = "0.1.74"
 axum = { version = "0.7.5", features = ["macros"] }
+derive-new = "0.6.0"
 sqlx = { version = "0.7.3", features = ["runtime-tokio", "uuid", "chrono", "macros", "postgres", "migrate"] }
 tokio = { version = "1.37.0", features = ["full"] }
 rstest = "0.18.2"
