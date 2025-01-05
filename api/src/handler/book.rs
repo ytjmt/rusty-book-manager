@@ -1,12 +1,11 @@
 use axum::{
     extract::{Path, State},
     http::StatusCode,
-    response::{IntoResponse, Response},
     Json,
 };
+use kernel::model::id::BookId;
 use registry::AppRegistry;
 use shared::error::AppResult;
-use uuid::Uuid;
 
 use crate::model::book::{BookResponse, CreateBookRequest};
 
@@ -33,7 +32,7 @@ pub async fn show_book_list(
 }
 
 pub async fn show_book(
-    Path(book_id): Path<Uuid>,
+    Path(book_id): Path<BookId>,
     State(registry): State<AppRegistry>,
 ) -> AppResult<Json<BookResponse>> {
     registry
