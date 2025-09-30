@@ -1,3 +1,7 @@
+DROP TABLE IF EXISTS returned_checkouts;
+
+DROP TABLE IF EXISTS checkouts;
+
 DROP TRIGGER IF EXISTS books_updated_at_trigger ON books;
 
 DROP TABLE IF EXISTS books;
