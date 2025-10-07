@@ -18,6 +18,8 @@ use tower_http::{
     trace::{DefaultMakeSpan, DefaultOnRequest, DefaultOnResponse, TraceLayer},
     LatencyUnit,
 };
+#[cfg(not(debug_assertions))]
+use tracing::subscriber;
 use tracing::Level;
 use tracing_subscriber::{layer::SubscriberExt, util::SubscriberInitExt, EnvFilter};
 
@@ -73,6 +75,11 @@ fn init_logger() -> Result<()> {
         .with_file(true)
         .with_line_number(true)
         .with_target(false);
+
+    // リリースビルドではJSONの構造化ログを出力する。
+    #[cfg(not(debug_assertions))]
+    let subscriber = subscriber.json();
+
     tracing_subscriber::registry()
         .with(subscriber)
         .with(env_filter)
