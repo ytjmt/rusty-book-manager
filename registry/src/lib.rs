@@ -15,7 +15,7 @@ use kernel::repository::{
 use shared::config::AppConfig;
 
 #[derive(Clone)]
-pub struct AppRegistry {
+pub struct AppRegistryImpl {
     health_check_repository: Arc<dyn HealthCheckRepository>,
     book_repository: Arc<dyn BookRepository>,
     auth_repository: Arc<dyn AuthRepository>,
@@ -23,7 +23,7 @@ pub struct AppRegistry {
     checkout_repository: Arc<dyn CheckoutRepository>,
 }
 
-impl AppRegistry {
+impl AppRegistryImpl {
     pub fn new(
         pool: ConnectionPool,
         redis_client: Arc<RedisClient>,
@@ -46,24 +46,37 @@ impl AppRegistry {
             checkout_repository,
         }
     }
+}
 
-    pub fn health_check_repository(&self) -> Arc<dyn HealthCheckRepository> {
+#[mockall::automock]
+pub trait AppRegistryExt {
+    fn health_check_repository(&self) -> Arc<dyn HealthCheckRepository>;
+    fn book_repository(&self) -> Arc<dyn BookRepository>;
+    fn auth_repository(&self) -> Arc<dyn AuthRepository>;
+    fn checkout_repository(&self) -> Arc<dyn CheckoutRepository>;
+    fn user_repository(&self) -> Arc<dyn UserRepository>;
+}
+
+impl AppRegistryExt for AppRegistryImpl {
+    fn health_check_repository(&self) -> Arc<dyn HealthCheckRepository> {
         self.health_check_repository.clone()
     }
 
-    pub fn book_repository(&self) -> Arc<dyn BookRepository> {
+    fn book_repository(&self) -> Arc<dyn BookRepository> {
         self.book_repository.clone()
     }
 
-    pub fn auth_repository(&self) -> Arc<dyn AuthRepository> {
+    fn auth_repository(&self) -> Arc<dyn AuthRepository> {
         self.auth_repository.clone()
     }
 
-    pub fn user_repository(&self) -> Arc<dyn UserRepository> {
+    fn user_repository(&self) -> Arc<dyn UserRepository> {
         self.user_repository.clone()
     }
 
-    pub fn checkout_repository(&self) -> Arc<dyn CheckoutRepository> {
+    fn checkout_repository(&self) -> Arc<dyn CheckoutRepository> {
         self.checkout_repository.clone()
     }
 }
+
+pub type AppRegistry = Arc<dyn AppRegistryExt + Send + Sync + 'static>;
