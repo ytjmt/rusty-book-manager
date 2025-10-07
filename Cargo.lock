@@ -2061,6 +2061,7 @@ dependencies = [
  "axum",
  "opentelemetry",
  "opentelemetry-jaeger",
+ "opentelemetry_sdk",
  "registry",
  "shared",
  "tokio",
